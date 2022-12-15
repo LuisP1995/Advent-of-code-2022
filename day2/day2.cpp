@@ -11,6 +11,68 @@
 // Draw is 3
 // Win is 6
 
+int process2(std::string problem, int score)
+{
+    std::string delimiter = " ";
+    std::string opponent;
+    std::string myChoice;
+    size_t pos = 0;
+    std::string token;
+    while ((pos = problem.find(delimiter)) != std::string::npos)
+    {
+        token = problem.substr(0, pos);
+        opponent = token;
+        problem.erase(0, pos+delimiter.length());
+    }
+    myChoice = problem;
+    if (myChoice == "X") // lose
+    {
+        if (opponent == "A") // rock
+        {
+            score += 3; // pick 
+        }
+        else if (opponent == "B") // paper
+        {
+            score +=1;
+        }
+        else
+        {
+            score +=2;
+        }
+    }
+    else if (myChoice == "Y") // draw
+    {
+        if (opponent == "A") // rock
+        {
+            score += 4;
+        }
+        else if (opponent == "B") // paper
+        {
+            score +=5;
+        }
+        else
+        {
+            score += 6;
+        }
+    }
+    else // we win
+    {
+        if (opponent == "A") // rock
+        {
+            score += 8;
+        }
+        else if (opponent == "B") // paper
+        {
+            score += 9;
+        }
+        else
+        {
+            score += 7;
+        }
+    }
+    return score;
+}
+
 int process (std::string problem, int score)
 {
     std::string delimiter = " ";
@@ -25,7 +87,7 @@ int process (std::string problem, int score)
         problem.erase(0, pos+delimiter.length());
     }
     myChoice = problem;
-    if (myChoice == "X") // we now lose
+    if (myChoice == "X")
     {
         score +=1;
         if (opponent == "A") // draw
@@ -61,46 +123,12 @@ int process (std::string problem, int score)
             score +=6;
         }
     }
-    // we have drawn
-    // if (myChoice == "X" && opponent == "A"  || myChoice == "Y" && opponent == "B" || myChoice == "Z" && opponent == "C")
-    // {
-    //     std::cout<<myChoice<<std::endl;
-    //     score += 3;
-    // }
-    // we won 
-    // else if (myChoice == "X" && opponent == "C" || myChoice == "Y" && opponent == "A" || myChoice == "Z" && opponent == "B")
-    // {
-    //     if (myChoice == "X")
-    //     {
-    //         std::cout<<myChoice<<std::endl;
-    //         score += 1;
-    //     }
-    //     else if (myChoice == "Y")
-    //     {
-    //         std::cout<<myChoice<<std::endl;
-
-    //         score += 2;
-    //     }
-    //     else
-    //     {
-    //         std::cout<<myChoice<<std::endl;
-
-    //         score += 3;
-    //     }
-
-    //     score += 6;
-    // }
-    // // we lost
-    // else{
-    //     std::cout<<myChoice<<std::endl;
-    //     score += 0;
-    // }
-    
     return score;   
 }
 
 int rps (std::string filepath){
     int score = 0;
+    int trueScore = 0;
     std::string data;
     std::ifstream input (filepath);
     while(getline(input,data))
@@ -112,9 +140,10 @@ int rps (std::string filepath){
         else
         {
             score = process(data, score);
+            trueScore = process2(data, trueScore);
         }
     }
-    return score;
+    return trueScore;
 } 
 
 int main()
