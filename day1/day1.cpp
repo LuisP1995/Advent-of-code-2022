@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <map>
-#include <vector>
 #include <string>
 
 std::map<int, int> loadData(std::string filePath)
@@ -29,7 +27,7 @@ std::map<int, int> loadData(std::string filePath)
     return elves;
 }
 
-int findTop(std::map<int, int>elves, int counter){
+void findTop(std::map<int, int>elves, int counter){
     std::cout<<counter<<std::endl;
     auto max = std::max_element(
         elves.begin(),elves.end(),
@@ -39,17 +37,17 @@ int findTop(std::map<int, int>elves, int counter){
         });
     std::cout<<max->second<<::std::endl;
     elves.erase(max->first);
-    if (counter != 3)
+    if (counter < 3)
     {
         findTop(elves,++counter);
     } 
-    return 1;
+    return;
 }
 
 int main()
 {
     int totalTopThree = 0;
     std::map<int,int> elves = loadData("data");
-    int max = findTop(elves, 0);
+    findTop(elves, 1);
     return 0;
 }
